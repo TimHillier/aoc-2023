@@ -50,14 +50,14 @@ def search_string_for_numbers(full_line, valid_indexs):
     return found_numbers
 
 def get_valid_locations(symbol_index, line_length):
-    d = symbol_index - 1 # 13 - 1 = 12 
-    e = symbol_index + 1 # 13 + 1 = 14
-    a = d - line_length # 12 - 10 = 2
-    b = symbol_index - line_length # 13 - 10 = 3
-    c = e - line_length # 14 - 10 = 4
-    f = d + line_length # 12 + 10 = 22
-    g = symbol_index + line_length # 13 + 10 = 23
-    h = e + line_length # 14 + 10 = 24
+    d = symbol_index - 1 
+    e = symbol_index + 1
+    a = d - line_length
+    b = symbol_index - line_length
+    c = e - line_length
+    f = d + line_length
+    g = symbol_index + line_length
+    h = e + line_length
 
     return [a,b,c,d,e,f,g,h]
 
