@@ -5,10 +5,10 @@ def main():
     solution_2(lines)
 
 def solution_1(lines):
-    return false
+    return False
 
 def solution_2(lines):
-    return false
+    return False
 
 if __name__ == "__main__" :
     main()
