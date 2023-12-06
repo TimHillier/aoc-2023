@@ -22,14 +22,12 @@ def solution_1(lines):
 
 def solution_2(lines):
     data = []
-    ways_to_win = []
     for line in lines:
         line = parse(line)
         data.append(line)
     time = int("".join(data[0]))
     distance = int("".join(data[1])) 
-    ways_to_win.append(get_ways_to_win(time,distance))
-    print(ways_to_win)
+    print(get_ways_to_win(time,distance))
     return False
 
 def get_ways_to_win(time, distance):
