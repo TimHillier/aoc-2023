@@ -35,32 +35,90 @@ def parse(line):
     return line
 
 def get_location_range(seed_ranges, alm_arr):
-    next = seed_ranges
-########    for section in alm_arr:
-    low = get_next_range(next, alm_arr)
-    print(min(next))
-    return False
+    next_range = seed_ranges
+    for section in alm_arr:
+        print("Next Range: " + str(next_range))
+        print("Next Section: " + str(section))
+        next_range = get_next_range(next_range, section)
+    print(min(next_range))
 
 def get_next_range(seed_ranges, sections):
-    lowest = -1
-    for array in seed_ranges:
-        seed_start = array[0]
-        seed_stop = array[1]
-        for seed in range(seed_start, (seed_start + seed_stop)):
-            #            print("Testing Seed: " + str(seed))
-            next = [seed]
-            for section in sections:
-                next = get_next(next, section)
+    # return an array of [[start_value, range]...]
+    next_range = []
+    # find start
+#    print(seed_ranges)
+#    print(sections)
 
-#            print("Location: " + str(next))
-            if (lowest == -1):
-                lowest = next 
-                continue
-            if (lowest > next):
-                lowest = next 
-                continue
+    for seed_range in seed_ranges:
+        range_start = seed_range[0]
+        range_end = range_start + seed_range[1] - 1
+        for array in sections:
 
-    print("Lowest: " + str(lowest))
+            source_start = int(array[1])
+            source_end = source_start + int(array[2]) - 1
+            destination_start = int(array[0])
+            destination_end = destination_start + int(array[2]) - 1
+
+            '''
+            if(source_start > range_start or source_end < range_start):
+                continue
+            if(destination_start > range_end or destination_end < range_end):
+                continue
+            '''
+
+            new_range_start_index = range_start - source_start
+            new_range_start = destination_start + new_range_start_index
+
+            left_over = 0 
+
+            if(new_range_start + seed_range[1] - 1 > destination_end):
+                new_range_range = new_range_start - destination_end
+                left_over = seed_range[1] - new_range_range
+            else:
+                new_range_range = seed_range[1]
+
+            add_range = [new_range_start, new_range_range]
+            print("Add_range: " + str(add_range))
+
+
+            next_range.append([new_range_start, new_range_range])
+
+            if(left_over > 0):
+                #append to seed_ranges
+                seed_ranges.append[range_end - left_over, left_over]
+
+            '''
+            print("New Range Start: " + str(new_range_start))
+            print("Source_start: " + str(source_start))
+            print("Source_end: " + str(source_end))
+            print("Destination_start: " + str(destination_start))
+            print("Destination_end: " + str(destination_end))
+            print("Range_start: " + str(range_start))
+            print("Range_end: " + str(range_end))
+            '''
+    return next_range
+
+def get_next(seeds, section):
+    next_seeds = []
+    seeds = list(map(int,seeds))
+    for array in section:
+        source_start = int(array[1])
+        source_end = source_start + int(array[2]) - 1
+        destination_start = int(array[0])
+        found_seeds = []
+        for seed in seeds:
+            if(seed >= source_start and seed <= source_end):
+                seed_index = seed - source_start
+                next_seeds.append(destination_start + seed_index)
+                found_seeds.append(seed)
+        seeds = [x for x in seeds if x not in found_seeds]
+    return next_seeds + seeds
+
+def get_location(seeds, alm_arr):
+    next = seeds
+    for section in alm_arr:
+        next = get_next(next, section)
+    print(min(next))
     return False
 
 
@@ -78,28 +136,7 @@ def get_mapping(almanac):
     alm_arr.append(section)
     return alm_arr
 
-def get_location(seeds, alm_arr):
-    next = seeds
-    for section in alm_arr:
-        next = get_next(next, section)
-    print(min(next))
-    return False
 
-def get_next(seeds, section):
-    next_seeds = []
-    seeds = list(map(int,seeds))
-    for array in section:
-        source_start = int(array[1])
-        source_end = source_start + int(array[2]) - 1
-        destination_start = int(array[0])
-        found_seeds = []
-        for seed in seeds:
-            if(seed >= source_start and seed <= source_end):
-                seed_index = seed - source_start
-                next_seeds.append(destination_start + seed_index)
-                found_seeds.append(seed)
-        seeds = [x for x in seeds if x not in found_seeds]
-    return next_seeds + seeds
 
 if __name__ == "__main__" :
     main()
